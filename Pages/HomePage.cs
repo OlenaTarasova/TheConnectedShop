@@ -25,7 +25,7 @@ namespace TheConnectedShop.Pages
             Assert.That(pageTitle, Is.EqualTo(ExpectedTitle), $"Incorrect page title. Expected: {ExpectedTitle}, Actual: {pageTitle}");
         }
 
-       //д/з перевірка title. corectURL - done
+       
     }
 }
 

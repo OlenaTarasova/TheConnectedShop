@@ -20,13 +20,13 @@ namespace TheConnectedShop.Pages
 
         public Header(IPage page) : base(page)
         {
-            _logoLink = Page.Locator("a.header__heading-link");
-            _logoImage = Page.Locator("a.header__heading-link img");
-            _phoneNumber = Page.Locator("a.header__customer-support-region__button");
-            _profileIcon = Page.Locator("svg.icon.icon-account");
-            _cartIcon = Page.Locator("#cart-icon-bubble");
-            _searchButton = Page.GetByRole(AriaRole.Button, new() { Name = "Search" });
-            _title = Page.Locator("The Connected Shop - Smart Locks, Smart Sensors, Smart Home &amp; Office");
+            _logoLink = _page.Locator("a.header__heading-link");
+            _logoImage = _page.Locator("a.header__heading-link img");
+            _phoneNumber =_page.Locator("a.header__customer-support-region__button");
+            _profileIcon = _page.Locator("svg.icon.icon-account");
+            _cartIcon = _page.Locator("#cart-icon-bubble");
+            _searchButton = _page.GetByRole(AriaRole.Button, new() { Name = "Search" });
+            _title = _page.Locator("The Connected Shop - Smart Locks, Smart Sensors, Smart Home &amp; Office");
         }
         public async Task VerifyLogoVisibleAsync()
         {

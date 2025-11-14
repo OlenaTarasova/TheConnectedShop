@@ -31,11 +31,11 @@ namespace TheConnectedShop.Tests
                 SlowMo = 200
 
             });
+            _page = await _browser.NewPageAsync();
             _homePage = new HomePage(_page);
 
             _header = new Header(_page);
 
-            _page = await _browser.NewPageAsync();
             await _homePage.OpenAsync();
 
         }

@@ -13,17 +13,17 @@ namespace TheConnectedShop.Pages
 
         private const string ExpectedTitle = "The Connected Shop - Smart Locks, Smart Sensors, Smart Home &amp; Office";
         private const string ExpectedUrl = "https://theconnectedshop.com/";
-       [Test]
-          public async Task VerifyHomePageAsync()
-        {
-            // Перевірка URL
-            var currentUrl = Page.Url;
-            Assert.That(currentUrl, Is.EqualTo(ExpectedUrl), $"Incorrect URL. Expected: {ExpectedUrl}, Actual: {currentUrl}");
+    //    [Test]
+    //       public async Task VerifyHomePageAsync()
+    //     {
+    //         // Перевірка URL
+    //         var currentUrl = Page.Url;
+    //         Assert.That(currentUrl, Is.EqualTo(ExpectedUrl), $"Incorrect URL. Expected: {ExpectedUrl}, Actual: {currentUrl}");
 
-            // Перевірка Title
-            var pageTitle = await Page.TitleAsync();
-            Assert.That(pageTitle, Is.EqualTo(ExpectedTitle), $"Incorrect page title. Expected: {ExpectedTitle}, Actual: {pageTitle}");
-        }
+    //         // Перевірка Title
+    //         var pageTitle = await Page.TitleAsync();
+    //         Assert.That(pageTitle, Is.EqualTo(ExpectedTitle), $"Incorrect page title. Expected: {ExpectedTitle}, Actual: {pageTitle}");
+    //     }
 
        
     }

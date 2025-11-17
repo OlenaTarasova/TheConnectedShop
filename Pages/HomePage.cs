@@ -11,7 +11,7 @@ namespace TheConnectedShop.Pages
 
         public async Task OpenAsync() => await NavigateAsync();
 
-        private const string ExpectedTitle = "The Connected Shop - Smart Locks, Smart Sensors, Smart Home &amp; Office";
+        private const string ExpectedTitle = "The Connected Shop - Smart Locks, Smart Sensors, Smart Home & Office";
         private const string ExpectedUrl = "https://theconnectedshop.com/";
        
           public async Task VerifyHomePageAsync()

@@ -32,14 +32,14 @@ namespace TheConnectedShop.Pages
 
         
               _page = page;   
-              
+
             _logoLink = _page.Locator("a.header__heading-link");
 
             _logoImage = _page.Locator("a.header__heading-link img");
 
-            _phoneNumber = _page.Locator("a[href^=\"tel:\"]");
+            _phoneNumber = _page.Locator("a[href^=\"tel:\"]").Nth(1);
 
-            _profileIcon = _page.Locator("svg.icon.icon-account");
+            _profileIcon = _page.Locator("svg.icon-account").Nth(1);
 
             _cartIcon = _page.Locator("#cart-icon-bubble");
 

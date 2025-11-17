@@ -30,7 +30,7 @@ namespace TheConnectedShop.Pages
 
             {
 
-                WaitUntil = WaitUntilState.NetworkIdle //перевірка завантаження
+                WaitUntil = WaitUntilState.DOMContentLoaded //перевірка завантаження
 
             });
 

@@ -30,9 +30,9 @@ namespace TheConnectedShop.Pages
 
         {
 
-           // if (page is null)
-              //  throw new ArgumentNullException(nameof(page));
+        
               _page = page;   
+              
             _logoLink = _page.Locator("a.header__heading-link");
 
             _logoImage = _page.Locator("a.header__heading-link img");

@@ -20,7 +20,11 @@ namespace TheConnectedShop.Pages
 
         private readonly ILocator _profileIcon;
 
+        private readonly ILocator _profileLink;
+
         private readonly ILocator _cartIcon;
+
+        private readonly ILocator _cartLink;
 
         private readonly ILocator _searchButton;
  
@@ -41,8 +45,12 @@ namespace TheConnectedShop.Pages
 
             _profileIcon = _page.Locator("svg.icon-account").Nth(1);
 
+            _profileLink = _page.Locator("a[href*='customer_authentication/redirect']").Nth(1);
+
             _cartIcon = _page.Locator("#cart-icon-bubble");
 
+           _cartLink = _page.Locator("a[href='/cart']").Nth(0);
+           
             _searchButton = _page.GetByRole(AriaRole.Button, new() { Name = "Search" });
          
           
@@ -73,6 +81,13 @@ namespace TheConnectedShop.Pages
             Assert.That(await _profileIcon.IsVisibleAsync(), Is.True, "Іконка профілю не відображається");
 
             Assert.That(await _cartIcon.IsVisibleAsync(), Is.True, "Іконка кошика не відображається");
+
+        }
+        public async Task VerifyProfileLinkVisibleAsync() // тыльки наявнысть href, пізніше добавити тести для перевірки профілю
+
+        {
+
+            Assert.That(await _profileLink.IsVisibleAsync(), Is.True, "Посилання профілю не відображається");
 
         }
  
@@ -142,13 +157,14 @@ namespace TheConnectedShop.Pages
 
         }
  
-        public async Task VerifyCartIconAttributesAsync()
+        public async Task VerifyCartIconAttributesAsync() //тут href атрибут перувфряла в Multiply , ркуа профіля провіряла окремим методом - який сосіб краащий 
 
         {
 
             string id = await _cartIcon.GetAttributeAsync("id");
 
             string classAttr = await _cartIcon.GetAttributeAsync("class");
+            string hrefValue = await _cartLink.GetAttributeAsync("href");
  
             Assert.Multiple(() =>
 
@@ -159,6 +175,7 @@ namespace TheConnectedShop.Pages
                 Assert.That(classAttr, Does.Contain("header__icon--cart").Or.Contain("cart-count-bubble"), 
 
                     "Клас кошика не відповідає очікуваному");
+                Assert.That(hrefValue, Does.Contain("/cart").IgnoreCase, $"Unexpected href value: {hrefValue}");
 
             });
 

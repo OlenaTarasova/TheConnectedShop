@@ -15,8 +15,7 @@ namespace TheConnectedShop.Tests
         private const string BaseUrl = "https://theconnectedshop.com/";
 
         // public BaseTest(IPage page) : base(page)
-        // {
-        // }
+       
 
         [SetUp]
         public async Task Setup()

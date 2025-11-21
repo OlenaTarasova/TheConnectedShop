@@ -61,7 +61,8 @@ namespace TheConnectedShop.Tests
         {
             await _homePage.VerifyHomePageAsync();
           await _profilePage.Verify_Click_Profile_IconAsync();
-            
+          //await _profilePage.Verify_SignIn_With_EmailAsync("(string email)");
+          await _profilePage.Verify_Sign_In_To_ShopAsync("string email)");
         }
     }
 }

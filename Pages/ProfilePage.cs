@@ -1,53 +1,98 @@
 using Microsoft.Playwright;
-
 using System.Threading.Tasks;
-
 using NUnit.Framework;
- 
+
 namespace TheConnectedShop.Pages
-
 {
-
     public class ProfilePage : BasePage
-
     {
-          
-         private readonly ILocator _profileIcon;
-
         private readonly ILocator _profileLink;
-       private  readonly ILocator _singInURL;
-        protected readonly IPage _page;
-         private const string ExpectedSignInTitle = "Sign in - The Connected Shop";
-         // private const string ExpectedSignInUrl = "https://account.theconnectedshop.com/authentication/login?client_id=bab453b6-fd6a-4aec-ac3f-142ceb01bcd4&locale=en&redirect_uri=%2Fauthentication%2Foauth%2Fauthorize%3Fclient_id%3Dbab453b6-fd6a-4aec-ac3f-142ceb01bcd4%26locale%3Den%26nonce%3D6bd9d80b-7f4f-409f-819e-9d463fde7cc8%26redirect_uri%3Dhttps%253A%252F%252Faccount.theconnectedshop.com%252Fcallback%253Fsource%253Dcore%26region_country%3DUA%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWN5VjtTO0XcPSHKTq2R1CzZ&region_country=UA";
-         // не подобається url
+        private readonly ILocator _signInWithButton;
+        private readonly ILocator _emailField;
+        private readonly ILocator _continueButton;
+        private readonly ILocator _emailFieldSignInAccount;
+        private readonly string _testEmail;
+        private readonly ILocator _continueSignInAccount;
+
+
+        private const string ExpectedSignInTitle = "Sign in - The Connected Shop";
+        private const string ExpectedSignInAccountTitle = "Sign in – Shop account";
+
         public ProfilePage(IPage page) : base(page)
-
-        {  
-            _page = page;
-
-            _profileIcon = _page.Locator("svg.icon-account").Nth(1);
-
+        {
             _profileLink = Page.Locator("a[href*='customer_authentication/redirect']").Nth(1);
-            _singInURL = Page.Locator("a[href*='authentication/login?client_id']");
-           
+            _signInWithButton = Page.Locator("#standalone-button-core-idp");
+            _emailField = Page.Locator("#email");
+            _emailFieldSignInAccount = Page.Locator("#IdentityEmailForm-input");
+            _continueButton = Page.Locator("button[name='commit'][type='submit']");
+            _testEmail = "tarasova.e.pe@gmail.com";
+            _continueSignInAccount =  Page.GetByRole(AriaRole.Button, new() { Name = "Continue" });
         }
-          public async Task Verify_Click_Profile_IconAsync()
-          {
-           
-             Assert.That(await _profileLink.IsVisibleAsync(), Is.True, "Посилання профілю не відображається");
-         
-          await _profileIcon.ClickAsync();
 
-            await WaitForNetworkIdleAsync();
+       public async Task Verify_Click_Profile_IconAsync()
+{
+    //перевырка видимості
+    Assert.That(await _profileLink.IsVisibleAsync(), Is.True, "Посилання профілю не відображається");
 
-            // Перевірка URL
-            var currentUrlSignIn = Page.Url;
-            Assert.That(currentUrlSignIn, Does.Contain("authentication/login?client_id"), $"Incorrect URL. Expected to contain: authentication/login?client_id, Actual: {currentUrlSignIn}");
+    await _profileLink.ClickAsync();
 
-            var pageTitleSignIn = await Page.TitleAsync();
-            Assert.That(pageTitleSignIn, Is.EqualTo(ExpectedSignInTitle), $"Incorrect page title. Expected: {ExpectedSignInTitle}, Actual: {pageTitleSignIn}");
+   // await Page.WaitForURLAsync(new Regex("authentication/login"));// типу регулярний вираз
+await _emailField.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
 
-          } 
-          // провірка атрибутів кнопок і полів профілю
+    var currentUrlSignIn = Page.Url;// перевіряєм чи ми на првильній сторінці після кліку
+    Assert.That( currentUrlSignIn,Does.Contain("authentication/login?client_id"),
+        $"Incorrect URL. Expected to contain: authentication/login?client_id, Actual: {currentUrlSignIn}");
+
+    var pageTitleSignIn = await Page.TitleAsync();
+    Assert.That(pageTitleSignIn, Is.EqualTo(ExpectedSignInTitle),
+        $"Incorrect page title. Expected: {ExpectedSignInTitle}, Actual: {pageTitleSignIn}");
+}
+// public async Task Verify_SignIn_With_EmailAsync(string email)
+//         {
+//             await _emailField.IsVisibleAsync();
+//             await _emailField.FillAsync("tarasova.e.pe@gmail.com");
+//            await _continueButton.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible }); 
+//             await _continueButton.ClickAsync();
+    //          await Page.WaitForURLAsync(new Regex("authentication/code")); //перехыд на ыншу сторынку підтвердження email
+    //           var currentUrlEnterCode = Page.Url;// перевіряєм чи ми на првильній сторінці після кліку
+    // Assert.That( currentUrlEnterCode,Does.Contain("authentication/code"),
+    //     $"Incorrect URL. Expected to contain:authentication/code, Actual: {currentUrlEnterCode}");
+
+    // var pageTitleEnterCode = await Page.TitleAsync();
+    // Assert.That(pageTitleEnterCode, Is.EqualTo(ExpectedSignInTitle),
+    //     $"Incorrect page title. Expected: {ExpectedSignInTitle}, Actual: {pageTitleEnterCode}");}
+    
+
+public async Task Verify_Sign_In_To_ShopAsync(string email)
+{
+    await _signInWithButton.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+    
+    // Готуємо таск на нове вікно
+    var popupTask = Page.WaitForPopupAsync();
+
+    
+    await _signInWithButton.ClickAsync();
+
+    var popup = await popupTask;
+
+    await popup.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+
+    
+    var pageTitleSignInToShop = await popup.TitleAsync();
+    Assert.That(pageTitleSignInToShop, Is.EqualTo(ExpectedSignInAccountTitle),
+        $"Incorrect page title. Expected: {ExpectedSignInAccountTitle}, Actual: {pageTitleSignInToShop}");
+
+    var emailField = popup.Locator("#IdentityEmailForm-input");
+    var continueButton = popup.GetByRole(AriaRole.Button, new() { Name = "Continue" });
+
+    await emailField.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+    await emailField.FillAsync(_testEmail);
+
+    
+    await continueButton.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+    await continueButton.ClickAsync();
+
+
+}
     }
 }

@@ -40,7 +40,7 @@ namespace TheConnectedShop.Pages
 
         {
 
-            await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+             await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
 
         }
 

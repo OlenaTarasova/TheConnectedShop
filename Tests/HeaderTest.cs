@@ -74,10 +74,14 @@ namespace TheConnectedShop.Tests
             await _header.VerifyPhoneNumberAttributesAsync();
 
             await _header.VerifyProfileIconAttributesAsync();
+            
+            await _header.VerifyProfileLinkVisibleAsync();
 
             await _header.VerifyCartIconAttributesAsync();
 
             await _header.VerifySearchButtonAttributesAsync();
+            
+            
 
 
         }

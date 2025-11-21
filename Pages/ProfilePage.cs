@@ -70,7 +70,6 @@ public async Task Verify_Sign_In_To_ShopAsync(string email)
     // Готуємо таск на нове вікно
     var popupTask = Page.WaitForPopupAsync();
 
-    
     await _signInWithButton.ClickAsync();
 
     var popup = await popupTask;

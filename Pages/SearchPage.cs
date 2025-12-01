@@ -12,8 +12,7 @@ namespace TheConnectedShop.Pages
         public SearchPage(IPage page) : base(page)
         {
             _searchField = Page.Locator("#Search-In-Inline");
-           // _searchButton = Page.GetByRole(AriaRole.Button, new() { Name = "Search" });
-          //  _searchButton = Page.Locator("button[type='submit'][aria-label='Search']");
+         
           _searchButton = Page.Locator("button[onclick*='Search-In-Inline']");
           
 
@@ -74,7 +73,7 @@ namespace TheConnectedShop.Pages
  
                Assert.Multiple(() =>
 {
-    Assert.That(alertText, Does.Contain("No results found for").IgnoreCase,
+    Assert.That(alertText, Does.Contain("No results found for ").IgnoreCase,
         "Не знайдено фрагмент 'No results found for'");
 
     Assert.That(alertText, Does.Contain(SPECIAL_CHARS_SEARCH_QUERY).IgnoreCase,

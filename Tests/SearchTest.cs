@@ -2,6 +2,8 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using TheConnectedShop.Pages;
+using System.Text.Json;
+
 
 namespace TheConnectedShop.Tests
 {
@@ -10,8 +12,16 @@ namespace TheConnectedShop.Tests
 //     public const string VALID_SEARCH_QUERY = "valid_product_query";
 //     public const string INVALID_SEARCH_QUERY = "invalid_product_query";
 // }
- 
+public class ConfigData
+{
+    public string VALID_SEARCH_QUERY { get; set; }
+    public string INVALID_SEARCH_QUERY { get; set; }
+    public string EMPTY_SEARCH_QUERY { get; set; }
+    public string SPECIAL_CHARS_SEARCH_QUERY { get; set; }
+    
+}
     [TestFixture]
+  
     public class SearchTest
     {
         protected IPlaywright _playwright;
@@ -64,11 +74,13 @@ namespace TheConnectedShop.Tests
 
         public async Task VerifySearchFunctionalityAsync()
         {
-          
-            await _searchPage.Verify_Search_VAlid_ProductAsync(SearchTestConstants.VALID_SEARCH_QUERY);
-            await _searchPage.Verify_Search_Invalid_ProductAsync(SearchTestConstants.INVALID_SEARCH_QUERY);
-            await _searchPage.Verify_Search_Empty_ProductAsync(SearchTestConstants.EMPTY_SEARCH_QUERY);
-            await _searchPage.Verify_Search_Special_Chars_ProductAsync(SearchTestConstants.SPECIAL_CHARS_SEARCH_QUERY);
+          var json = await File.ReadAllTextAsync("new.json");
+        var convertor = JsonSerializer.Deserialize<ConfigData>(json);
+        
+            await _searchPage.Verify_Search_VAlid_ProductAsync(convertor.VALID_SEARCH_QUERY);
+            await _searchPage.Verify_Search_Invalid_ProductAsync(convertor.INVALID_SEARCH_QUERY);
+            await _searchPage.Verify_Search_Empty_ProductAsync(convertor.EMPTY_SEARCH_QUERY);
+            await _searchPage.Verify_Search_Special_Chars_ProductAsync(convertor.SPECIAL_CHARS_SEARCH_QUERY);
         
 
         }
